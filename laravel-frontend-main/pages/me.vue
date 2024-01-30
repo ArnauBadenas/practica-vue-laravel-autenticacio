@@ -5,6 +5,9 @@
 
 <script lang="ts" setup>
 import axios from 'axios';
+definePageMeta({
+  middleware:["auth"]
+})
 interface User{
   id:number,
   name:string,
