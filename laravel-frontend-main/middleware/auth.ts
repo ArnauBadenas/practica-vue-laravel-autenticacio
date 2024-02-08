@@ -1,12 +1,22 @@
 import axios, { AxiosError } from "axios"
 
 export default defineNuxtRouteMiddleware(async (to, from) => {
-    try{
-        await axios.get("/api/user")
+
+    const {user, initUser} = useAuth()
+    if(user.value == null){
+        user.value = await initUser()
     }
-    catch(error){
-        if(error instanceof AxiosError && error.response?.status===401){
-            return navigateTo("/login")
-        }
+    //Si segueix sent null envia a login
+    if(user.value == null){
+        return navigateTo("/login")
     }
+    
+    // try{
+    //     await axios.get("/api/user")
+    // }    
+    // catch(error){
+    //     if(error instanceof AxiosError && error.response?.status===401){
+            
+    //     }
+    // }
 })
