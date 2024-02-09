@@ -15,18 +15,16 @@ const user:Ref<LoginPayload> = ref({
   password:""
 })
 
-import {useAuth} from "../composables/useAuth";
-const {login}=useAuth();
-// async function login(user:LoginPayload){
-//   try{
-//     const login = await axios.post("/api/login", user)
-//     console.log(user)
-//     const router = useRouter()
-//     router.replace("/me")
-//   }catch(e){
-//     console.log(e)
-//   }
-// }
+async function login(user:LoginPayload){
+  try{
+    const login = await axios.post("/api/login", user)
+    console.log(user)
+    const router = useRouter()
+    router.replace("/me")
+  }catch(e){
+    console.log(e)
+  }
+}
 
 </script>
 <template>

@@ -5,15 +5,14 @@
 <script setup>
 import axios from 'axios';
 
-// async function logout(){
-//   try{
-//     const logout = axios.post("/api/logout")
-//     return logout
-//   }catch(e){
-//     console.log(e)
-//   }
-// }
-const {logout}=useAuth();
+async function logout(){
+  try{
+    const logout = axios.post("/api/logout")
+    return logout
+  }catch(e){
+    console.log(e)
+  }
+}
 logout()
 
 const router = useRouter()

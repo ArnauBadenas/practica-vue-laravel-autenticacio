@@ -18,21 +18,18 @@ const payload:Ref<RegisterPayload> = ref({
   password:"",
   password_confirmation:""
 })
-
-import {useAuth} from "../composables/useAuth";
-const {register}=useAuth();
-// async function register(payload:RegisterPayload) {
-//   try{
-//     const res=await axios.post("/api/register",payload)
-//     console.log(res)
-//     //afegit meu
-//     const router = useRouter()
-//     router.replace("/me")
-//   }catch(e){
-//     console.log(e)
-//   }
+async function register(payload:RegisterPayload) {
+  try{
+    const res=await axios.post("/api/register",payload)
+    console.log(res)
+    //afegit meu
+    const router = useRouter()
+    router.replace("/me")
+  }catch(e){
+    console.log(e)
+  }
   
-//  }
+ }
 
 </script>
 <template>
