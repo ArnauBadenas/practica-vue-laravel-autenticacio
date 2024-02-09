@@ -40,7 +40,7 @@ export const useAuth = () => {
     const user = ref<User | null>(null)
     async function getUser(): Promise<User | null> {
         if(user.value != null) return user.value
-        try {
+        try {            
             const res = await axios.get("/api/user")
             const user = res.data;
             return {
