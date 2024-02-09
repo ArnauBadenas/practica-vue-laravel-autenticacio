@@ -22,10 +22,6 @@ const links = [
     id: 3,
   },
 ];
-definePageMeta({
-  middleware:["auth"]
-})
-
 </script>
 <template>
   <div>

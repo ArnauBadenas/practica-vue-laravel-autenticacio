@@ -4,7 +4,6 @@ import { Ref } from 'nuxt/dist/app/compat/vue-demi';
 
 definePageMeta({
   layout: "centered",
-  middleware: ["guest"]
 });
 interface LoginPayload{
   "email":string,
