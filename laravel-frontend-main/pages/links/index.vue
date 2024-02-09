@@ -1,4 +1,7 @@
 <script setup lang="ts">
+import axios from 'axios';
+
+axios.get("/api/links")
 const links = [
   {
     short_link: "234jlsfsf",
