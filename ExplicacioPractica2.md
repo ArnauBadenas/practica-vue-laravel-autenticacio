@@ -11,10 +11,11 @@ message	"file_put_contents(/var/www/html/storage/framework/sessions/TIC1MxQ08Ri6
 
 
 Es pot observar que s'intenta obrir el fitxer de sessió del usuari dins de laravel, però no pot degut a que l'acabem d'esborrar.
+
 Com no pot obtenir el fitxer de  sessió, no es pot completar el get del usuari ja que les dades s'agafen de dins del fitxer de sessió.
 
 ## Ex5: Cerca informació i intenta donar una solució on aplicar un axios interceptor. En quin arxiu creus que hem d’aplicar el codi?
 
-Crec que el millor arxiu per a posar els interceptors es el mateix arxiu del plugin axios, anomenat en aquest cas axiosPlugin.ts. Això centralitza millor els interceptors i permet configurar-ho més fàcilment.
+Crec que el millor arxiu per a posar els interceptors es el mateix arxiu del plugin axios, anomenat en aquest cas **axiosPlugin.ts**. Això centralitza millor els interceptors i permet configurar-ho més fàcilment.
 
 El que volem que fagi el interceptor es que si no hi ha un codi de sessió envii un missatge al usuari dient que inici sessió en lloc de dir directament que no troba el arxiu de sessions.
