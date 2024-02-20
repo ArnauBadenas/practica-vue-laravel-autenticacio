@@ -21,9 +21,7 @@ async function handleLogin(payload:LoginPayload,node?:FormKitNode){
   try{
     await login(payload)
   }catch(error){
-    if(error instanceof AxiosError && error.response?.status===422){
-      node?.setErrors([],error.response.data.errors)
-    }   
+    handleInvalidForm(error,node)
   }
 }
 </script>
