@@ -1,17 +1,13 @@
 <script setup lang="ts">
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 import { Ref } from "nuxt/dist/app/compat/vue-demi";
+import { RegisterPayload } from "@/types";
+import type {FormKitNode} from "@formkit/core"
 
 definePageMeta({
   layout: "centered",
   middleware: ["guest"]
 });
-interface RegisterPayload{
-  "name":string,
-  "email":string,
-  "password":string,
-  "password_confirmation":string
-}
 const payload:Ref<RegisterPayload> = ref({
   name:"",
   email:"",
@@ -21,46 +17,26 @@ const payload:Ref<RegisterPayload> = ref({
 
 import {useAuth} from "../composables/useAuth";
 const {register}=useAuth();
-// async function register(payload:RegisterPayload) {
-//   try{
-//     const res=await axios.post("/api/register",payload)
-//     console.log(res)
-//     //afegit meu
-//     const router = useRouter()
-//     router.replace("/me")
-//   }catch(e){
-//     console.log(e)
-//   }
-  
-//  }
 
+async function handleRegister(payload:RegisterPayload,node?:FormKitNode){
+  try{
+    await register(payload)
+  }catch(error){
+    if(error instanceof AxiosError && error.response?.status===422){
+      node?.setErrors([],error.response.data.errors)
+    }   
+  }
+}
 </script>
 <template>
   <div class="register">
     <h1>Register</h1>
-    <form @submit.prevent="register(payload)">
-      <label>
-        <div>Name</div>
-        <input type="text" v-model="payload.name"/>
-      </label>
-
-      <label>
-        <div>Email</div>
-        <input type="email" v-model="payload.email"/>
-      </label>
-
-      <label>
-        <div>Password</div>
-        <input type="password" v-model="payload.password"/>
-      </label>
-
-      <label>
-        <div>Confirm Password</div>
-        <input type="password" v-model="payload.password_confirmation"/>
-      </label>
-
-      <button class="btn">Register</button>
-    </form>
+    <FormKit type="form" submit-label="Register" @submit="handleRegister">
+      <FormKit label="name" name="name" type="text"/>
+      <FormKit label="Email" name="email" type="email"/>
+      <FormKit label="Password" name="password" type="password"/>
+      <FormKit label="Confirm Password" name="password_confirmation" type="password"/>
+    </FormKit>
 
     <p>
       Already have an account?
