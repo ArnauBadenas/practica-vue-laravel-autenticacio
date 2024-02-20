@@ -1,27 +1,6 @@
 import { Ref } from "@vue/runtime-dom";
 import axios from "axios";
-
-interface LoginPayload {
-    email: string;
-    password: string;
-}
-interface RegisterPayload {
-    "name": string,
-    "email": string,
-    "password": string,
-    "password_confirmation": string
-}
-interface User {
-    "id": string,
-    "name": string,
-    "email": string,
-    "email_verified_at": string | null,
-    "two_factor_secret": string | null,
-    "two_factor_recovery_codes": string | null,
-    "two_factor_confirmed_at": string | null,
-    "created_at": string,
-    "updated_at": string
-}
+import type { User,LoginPayload,RegisterPayload } from "@/types";
 export const useAuth = () => {
     //desar l'usuari connectat
     async function login(payload: LoginPayload) {

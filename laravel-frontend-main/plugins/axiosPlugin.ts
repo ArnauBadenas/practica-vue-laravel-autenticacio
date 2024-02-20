@@ -16,17 +16,14 @@ export default defineNuxtPlugin(async (nuxtApp) => {
 
     //Interceptors
     axios.interceptors.response.use(
-        response => response,
-        error => {
-          const status = error.response ? error.response.status : null;
-          
-          if (status === 500) {
-            console.log("Session file doesnt exist")            
-          } else {
-            // Handle other errors
-          }
-          
+      (res) => res,
+      (error) => {
+        if ([401, 419].includes(error.response.status)) {
+          const { logout } = useAuth();
+          logout();
+        } else {
           return Promise.reject(error);
         }
-      );
+      }
+    );
 })
