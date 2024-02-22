@@ -20,6 +20,7 @@ async function createLink(payload:LoginPayload, node?:FormKitNode){
       ...payload,
       short_link: nanoid(8),
     })
+    navigateTo("/links")
   }catch(error){
     handleInvalidForm(error,node)
   }
