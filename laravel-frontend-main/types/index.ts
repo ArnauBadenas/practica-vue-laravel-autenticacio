@@ -8,6 +8,10 @@ export interface RegisterPayload {
     "password": string,
     "password_confirmation": string
 }
+export interface LinkPayload {
+    "email":string,
+    "short_link":string
+}
 export interface User {
     "id": string,
     "name": string,
