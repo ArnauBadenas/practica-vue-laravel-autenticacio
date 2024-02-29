@@ -1,12 +1,12 @@
 <script setup lang="ts">
 import axios from 'axios';
 import { Ref } from 'nuxt/dist/app/compat/vue-demi';
-import { Link } from '~~/types';
+import { Link, PaginateResponse } from '~~/types';
 import { TailwindPagination } from 'laravel-vue-pagination';
 
-const data = ref({})
-let links:Link[] = []
-const page:Ref<number> = ref(1)
+const data:Ref<PaginateResponse<Link> | null> = ref(null)
+let links = computed(()=>data.value?.data)
+const page = ref(useRoute().query.page || 1)
 
 const getLinks = async () => {
   const response = await axios.get(`/api/links?page=${page.value}`)
