@@ -11,6 +11,7 @@ let links:ComputedRef<Link[] | undefined> = computed(()=>data.value?.data)
 
 const queries = ref({
   page:1,
+  sort:"",
   "filter[full_link]":"",
   ...useRoute().query,
 })
@@ -51,9 +52,10 @@ definePageMeta({
       <table class="table-fixed w-full">
         <thead>
           <tr>
-            <th class="w-[35%]">Full Link</th>
-            <th class="w-[35%]">Short Link</th>
-            <th class="w-[10%]">Views</th>
+            <TableTh v-model="queries.sort" name="full_link" class="w-[29%]">Full Link</TableTh>
+            <TableTh v-model="queries.sort" name="short_link" class="w-[29%]">Short Link</TableTh>
+            <TableTh v-model="queries.sort" name="views" class="w-[29%]">Views</TableTh>
+
             <th class="w-[10%]">Edit</th>
             <th class="w-[10%]">Trash</th>
             <th class="w-[6%] text-center">
