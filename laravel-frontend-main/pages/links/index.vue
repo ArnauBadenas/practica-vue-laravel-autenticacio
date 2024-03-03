@@ -1,23 +1,34 @@
 <script setup lang="ts">
 import axios from 'axios';
-import { Ref } from 'nuxt/dist/app/compat/vue-demi';
+import { ComputedRef, Ref } from 'nuxt/dist/app/compat/vue-demi';
 import { Link, PaginateResponse } from '~~/types';
 import { TailwindPagination } from 'laravel-vue-pagination';
 
-const data:Ref<PaginateResponse<Link> | null> = ref(null)
-let links = computed(()=>data.value?.data)
+const data:Ref<PaginateResponse<Link> | null> = ref(null);
 const page = ref(useRoute().query.page || 1)
+let links:ComputedRef<Link[] | undefined> = computed(()=>data.value?.data)
+
+
+const queries = ref({
+  page:1,
+  "filter[full_link]":"",
+  ...useRoute().query,
+})
 
 const getLinks = async () => {
-  const response = await axios.get(`/api/links?page=${page.value}`)
+  //@ts-expect-error page es un nombre i així està bé
+  const qs = new URLSearchParams(queries.value).toString()
+  const response = await axios.get(`/api/links?${qs}`)
   data.value = response.data
-  links = response.data.data
+  console.log(data.value)
 }
-getLinks()
+await getLinks()
 
-watch(page, ()=>{
+watch(queries, async ()=>{
   getLinks()
-})
+  useRouter().push({query: queries.value})
+},
+{deep:true})
 
 definePageMeta({
   middleware:["auth"]
@@ -29,7 +40,7 @@ definePageMeta({
     <nav class="flex justify-between mb-4 items-center">
       <h1 class="mb-0">My Links</h1>
       <div class="flex items-center">
-        <SearchInput modelValue="" />
+        <SearchInput v-model="queries['filter[full_link]']" />
         <NuxtLink to="/links/create" class="ml-4">
           <IconPlusCircle class="inline" /> Create New
         </NuxtLink>
@@ -46,7 +57,7 @@ definePageMeta({
             <th class="w-[10%]">Edit</th>
             <th class="w-[10%]">Trash</th>
             <th class="w-[6%] text-center">
-              <button><IconRefresh /></button>
+              <button @click="getLinks"><IconRefresh /></button>
             </th>
           </tr>
         </thead>
@@ -84,7 +95,7 @@ definePageMeta({
         </tbody>
       </table>
       <TailwindPagination :data="data"
-      @pagination-change-page="page=$event"/>
+      @pagination-change-page="queries.page=$event"/>
       <div class="mt-5 flex justify-center"></div>
     </div>
 
