@@ -12,6 +12,14 @@ export interface LinkPayload {
     "email":string,
     "short_link":string
 }
+export interface RawLink {
+    id: number;
+    short_link: string;
+    full_link: string;
+    views: number;
+    created_at: string;
+    updated_at: string;
+  }
 export interface User {
     "id": string,
     "name": string,
@@ -23,15 +31,10 @@ export interface User {
     "created_at": string,
     "updated_at": string
 }
-export interface Link{
-    id:string,
-    created_at:string,
-    updated_at:string,
-    short_link:string,
-    full_link:string,
-    user_id:string,
-    views:string
-}
+export interface Link extends Omit<RawLink, "created_at" | "updated_at"> {
+    created_at: Date;
+    updated_at: Date;
+  }
 export interface ErrorResponse {
     message:string;
     errors: Record<string, string[]>;

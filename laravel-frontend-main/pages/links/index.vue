@@ -15,7 +15,6 @@ const queries = ref({
   "filter[full_link]":"",
   ...useRoute().query,
 })
-
 const getLinks = async () => {
   //@ts-expect-error page es un nombre i així està bé
   const qs = new URLSearchParams(queries.value).toString()
