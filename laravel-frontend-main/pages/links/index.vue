@@ -4,31 +4,28 @@ import { ComputedRef, Ref } from 'nuxt/dist/app/compat/vue-demi';
 import { Link, PaginateResponse } from '~~/types';
 import { TailwindPagination } from 'laravel-vue-pagination';
 
-const data:Ref<PaginateResponse<Link> | null> = ref(null);
+
+// const data:Ref<PaginateResponse<Link> | null> = ref(null);
 const page = ref(useRoute().query.page || 1)
-let links:ComputedRef<Link[] | undefined> = computed(()=>data.value?.data)
-
-
 const queries = ref({
   page:1,
   sort:"",
   "filter[full_link]":"",
   ...useRoute().query,
 })
-const getLinks = async () => {
-  //@ts-expect-error page es un nombre i així està bé
-  const qs = new URLSearchParams(queries.value).toString()
-  const response = await axios.get(`/api/links?${qs}`)
-  data.value = response.data
-  console.log(data.value)
-}
+
+const{data,index:getLinks}=useLinks({queries})
+
+let links:ComputedRef<Link[] | undefined> = computed(()=>data.value?.data)
+
+console.log(data)
 await getLinks()
 
 watch(queries, async ()=>{
-  getLinks()
   useRouter().push({query: queries.value})
 },
 {deep:true})
+
 
 definePageMeta({
   middleware:["auth"]
@@ -58,13 +55,15 @@ definePageMeta({
             <th class="w-[10%]">Edit</th>
             <th class="w-[10%]">Trash</th>
             <th class="w-[6%] text-center">
-              <button @click="getLinks"><IconRefresh /></button>
+              <button @click="getLinks()"><IconRefresh /></button>
             </th>
           </tr>
         </thead>
         <tbody>
           <tr v-for="link in links">
-            <td>
+            <!-- Observo que quan poso el ratolí a sobre es mostra el text created i diu fa quan es va crear. -->
+            <!-- La funció useTimeAgo la formateja de data a la quantitat de temps que fa quan va ser desde la data d'avui -->
+            <td :title="`created ${useTimeAgo(link.created_at).value}`">
               <a :href="link.full_link" target="_blank">
                 {{ link.full_link.replace(/^http(s?):\/\//, "") }}</a
               >

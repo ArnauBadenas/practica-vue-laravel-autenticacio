@@ -32,6 +32,7 @@ export const useLinks = ({queries = ref({})}:UseLinksOptions = {}) => {
             data:data.data.map((link)=>adapter(link))
         }) 
     }
+    watch(queries, index, { deep: true });
     //get one by id
     async function find(id:string | number){
         const{data}=await axios.get<RawLink>(`/api/${slug}/${id}`);
