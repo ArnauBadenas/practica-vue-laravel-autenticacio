@@ -14,11 +14,19 @@ const queries = ref({
   ...useRoute().query,
 })
 
-const{data,index:getLinks}=useLinks({queries})
+const{data,index:getLinks,destroy}=useLinks({queries})
 
 let links:ComputedRef<Link[] | undefined> = computed(()=>data.value?.data)
 
 await getLinks()
+
+async function handleDelete(id:number){
+  console.log(id)
+  await destroy(id)
+  if(data.value){
+     data.value.data=data.value?.data.filter(link=>link.id!=id)
+  }
+}
 
 watch(queries, async ()=>{
   useRouter().push({query: queries.value})
@@ -87,7 +95,7 @@ definePageMeta({
               /></NuxtLink>
             </td>
             <td>
-              <button><IconTrash /></button>
+              <button @click="handleDelete(link.id)"><IconTrash /></button>
             </td>
             <td></td>
           </tr>
