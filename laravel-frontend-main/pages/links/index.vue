@@ -18,7 +18,6 @@ const{data,index:getLinks}=useLinks({queries})
 
 let links:ComputedRef<Link[] | undefined> = computed(()=>data.value?.data)
 
-console.log(data)
 await getLinks()
 
 watch(queries, async ()=>{

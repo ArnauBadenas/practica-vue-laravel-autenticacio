@@ -32,7 +32,6 @@ async function handleLogin(payload:LoginPayload,node?:FormKitNode){
       <FormKit label="Email" name="email" type="email"/>
       <FormKit label="Password" name="password" type="password"/>
     </FormKit>
-
     <p>
       Don't have an account?
       <NuxtLink class="underline text-lime-600" to="/register"
